@@ -24,10 +24,14 @@ function Chat({label, placeholder}) {
 
     // Функція, яка викликається при кліку на кнопку збереження редагування
     const saveEdit = (index) => {
-        const newComments = [...displayedText]; // Копіюємо масив
-        newComments[index] = editingText; // Замінюємо коментар
-        setDisplayedText(newComments); // Зберігаємо новий масив
-        setEditingIndex(-1); // Закінчуємо редагування
+        const newComments = [...displayedText];
+        newComments[index] = {
+            ...newComments[index],
+            text: editingText,
+            date: new Date().toLocaleString() // оновлюємо дату редагування
+        };
+        setDisplayedText(newComments);
+        setEditingIndex(-1);
     };
 
     // Функція, яка викликається при зміні значення в інпуті
@@ -38,11 +42,25 @@ function Chat({label, placeholder}) {
     // Функція, яка викликається при натисканні на клавішу Enter в інпуті
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            if (displayedText.length >= elementsOnPage - 1) {
-                deleteItemFromArray(0); // Видаляємо перший коментар
-            }
-            addItemToTheEndOfArray(inputValue); // Додаємо коментар в кінець масиву
-            setInputValue(''); // Очищаємо інпут
+            setDisplayedText(currentDisplayText => {
+                const newComment = {
+                    text: inputValue,
+                    date: new Date().toLocaleString(),
+                    author: "User"
+                };
+
+                // Додаємо новий коментар на початок масиву
+                const updatedComments = [newComment, ...currentDisplayText];
+
+                // Якщо кількість коментарів перевищує дозволену, видаляємо останній
+                if (updatedComments.length > elementsOnPage) {
+                    updatedComments.pop(); // Видаляємо останній коментар
+                }
+
+                return updatedComments;
+            });
+
+            setInputValue('');
         }
     };
 
@@ -54,8 +72,12 @@ function Chat({label, placeholder}) {
 
     // Функція, яка додає елемент в кінець масиву
     const addItemToTheEndOfArray = (text) => {
-        // Використовуємо оператор розширення для створення нового масиву зі старими елементами та новим елементом
-        setDisplayedText([...displayedText, text]);
+        const newComment = {
+            text: text,
+            date: new Date().toLocaleString(),
+            author: "User"
+        };
+        setDisplayedText([...displayedText, newComment]);
     }
 
     // Функція, яка видаляє коментар
@@ -73,20 +95,6 @@ function Chat({label, placeholder}) {
     const renderComment = (comment, index) => {
         const isEditing = index === editingIndex;
 
-        const EditButtons = () => (
-            <>
-                <button onClick={() => saveEdit(index)}>Save</button>
-                <button onClick={cancelEdit}>Cancel</button>
-            </>
-        );
-
-        const DefaultButtons = () => (
-            <>
-                <button onClick={() => deleteComment(index)}>Delete</button>
-                <button onClick={() => startEditing(index)}>Edit</button>
-            </>
-        );
-
         return (
             <div key={index}>
                 {isEditing ? (
@@ -95,9 +103,22 @@ function Chat({label, placeholder}) {
                         onChange={(e) => setEditingText(e.target.value)}
                     />
                 ) : (
-                    <p>{comment}</p>
+                    <p>{comment.text} <small>({comment.date} by {comment.author})</small></p>
                 )}
-                {isEditing ? <EditButtons /> : <DefaultButtons />}
+                {isEditing ? (
+                    <>
+                        <button onClick={() => saveEdit(index)}>Save</button>
+                        <button onClick={() => setEditingIndex(-1)}>Cancel</button>
+                    </>
+                ) : (
+                    <>
+                        <button onClick={() => deleteComment(index)}>Delete</button>
+                        <button onClick={() => {
+                            startEditing(index);
+                            setEditingText(comment.text);
+                        }}>Edit</button>
+                    </>
+                )}
             </div>
         );
     };
