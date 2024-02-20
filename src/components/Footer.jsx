@@ -1,10 +1,10 @@
 function Footer() {
   return (
-    <footer className="footer">
-      <ul className="list-group">
-        <li className="list-group-item">First item</li>
-        <li className="list-group-item">Second item</li>
-        <li className="list-group-item">Third item</li>
+    <footer>
+      <ul>
+        <li>First item of Footer</li>
+        <li>Second item of Footer</li>
+        <li>Third item of Footer</li>
       </ul>
     </footer>
   );
