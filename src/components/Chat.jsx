@@ -48,11 +48,13 @@ function Chat({label, placeholder}) {
 
     // Функція, яка видаляє елемент з масиву за індексом
     const deleteItemFromArray = (index) => {
+        // Використовуємо метод filter для створення нового масиву без елемента за індексом
         setDisplayedText(displayedText.filter((_, i) => i !== index));
     };
 
     // Функція, яка додає елемент в кінець масиву
     const addItemToTheEndOfArray = (text) => {
+        // Використовуємо оператор розширення для створення нового масиву зі старими елементами та новим елементом
         setDisplayedText([...displayedText, text]);
     }
 
@@ -63,31 +65,41 @@ function Chat({label, placeholder}) {
 
     // Функція, яка скасовує редагування
     const cancelEdit = () => {
+        // Скасовуємо редагування
         setEditingIndex(-1);
     };
 
     // Функція, яка рендерить коментарі
     const renderComment = (comment, index) => {
-        if (index === editingIndex) {
-            return (
-                <div key={index}>
+        const isEditing = index === editingIndex;
+
+        const EditButtons = () => (
+            <>
+                <button onClick={() => saveEdit(index)}>Save</button>
+                <button onClick={cancelEdit}>Cancel</button>
+            </>
+        );
+
+        const DefaultButtons = () => (
+            <>
+                <button onClick={() => deleteComment(index)}>Delete</button>
+                <button onClick={() => startEditing(index)}>Edit</button>
+            </>
+        );
+
+        return (
+            <div key={index}>
+                {isEditing ? (
                     <textarea
                         value={editingText}
                         onChange={(e) => setEditingText(e.target.value)}
                     />
-                    <button onClick={() => saveEdit(index)}>Save</button>
-                    <button onClick={cancelEdit}>Cancel</button>
-                </div>
-            );
-        } else {
-            return (
-                <p key={index}>
-                    {comment}
-                    <button onClick={() => deleteComment(index)}>Delete</button>
-                    <button onClick={() => startEditing(index)}>Edit</button>
-                </p>
-            );
-        }
+                ) : (
+                    <p>{comment}</p>
+                )}
+                {isEditing ? <EditButtons /> : <DefaultButtons />}
+            </div>
+        );
     };
 
     // Повертаємо JSX
