@@ -1,14 +1,8 @@
 function MainContent() {
     return (
         <div>
-            <div className="container">
-                <div className="row">
-                    <div className="col">
-                        <h1>Heading</h1>
-                        <p>Paragraph</p>
-                    </div>
-                </div>
-            </div>
+            <h1>Heading of Main block</h1>
+            <p>Paragraph of Main block</p>
         </div>
     )
 }
