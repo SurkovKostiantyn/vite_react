@@ -75,12 +75,6 @@ function Chat({label, placeholder}) {
         deleteItemFromArray(index);
     }
 
-    // Функція, яка скасовує редагування
-    const cancelEdit = () => {
-        // Скасовуємо редагування
-        setEditingIndex(-1);
-    };
-
     // Функція, яка рендерить коментарі
     const renderComment = (comment, index) => {
         const isEditing = index === editingIndex;
