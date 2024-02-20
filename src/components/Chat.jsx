@@ -70,16 +70,6 @@ function Chat({label, placeholder}) {
         setDisplayedText(displayedText.filter((_, i) => i !== index));
     };
 
-    // Функція, яка додає елемент в кінець масиву
-    const addItemToTheEndOfArray = (text) => {
-        const newComment = {
-            text: text,
-            date: new Date().toLocaleString(),
-            author: "User"
-        };
-        setDisplayedText([...displayedText, newComment]);
-    }
-
     // Функція, яка видаляє коментар
     const deleteComment = (index) => {
         deleteItemFromArray(index);
