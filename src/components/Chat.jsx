@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import PropTypes from "prop-types";
 
 function Chat({label, placeholder}) {
@@ -87,7 +87,12 @@ function Chat({label, placeholder}) {
                         onChange={(e) => setEditingText(e.target.value)}
                     />
                 ) : (
-                    <p>{comment.text} <small>({comment.date} by {comment.author})</small></p>
+                    <p>
+                        {comment.text}
+                        <small>
+                            ({comment.date} by {comment.author})
+                        </small>
+                    </p>
                 )}
                 {isEditing ? (
                     <>
