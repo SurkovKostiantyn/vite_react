@@ -1,16 +1,37 @@
 import { useState } from 'react';
 import Students from '../list.json';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 function List() {
     const [selectedCity, setSelectedCity] = useState('');
+    const [sortDirection, setSortDirection] = useState(null); // 'up', 'down', null
+
+    const handleSort = (direction) => {
+        setSortDirection(direction);
+    }
 
     const handleCityChange = (event) => {
         setSelectedCity(event.target.value);
+        setSortDirection(null);
     };
 
-    const filteredStudents = selectedCity
-        ? Students.filter(student => student.city === selectedCity)
-        : Students;
+    const getSortedFilteredStudents = () => {
+        let filteredStudents = selectedCity
+            ? Students.filter(student => student.city === selectedCity)
+            : Students;
+
+        if (sortDirection) {
+            filteredStudents = [...filteredStudents].sort((a, b) => {
+                return sortDirection === 'up' ? a.absences - b.absences : b.absences - a.absences;
+            });
+        }
+
+        return filteredStudents;
+    };
+
+    const sortedFilteredStudents = getSortedFilteredStudents();
 
     const showOptions = (data) => {
         return [...new Set(data.map(item => item.city))]
@@ -31,10 +52,19 @@ function List() {
                         {showOptions(Students)}
                     </select>
                 </label>
+                <button onClick={() => handleSort('down')}>
+                    Sort by absences <ArrowDownwardIcon/>
+                </button>
+                <button onClick={() => handleSort('up')}>
+                    Sort by absences <ArrowUpwardIcon/>
+                </button>
+                <button onClick={() => handleSort(null)}>
+                    Clear sorting <HighlightOffIcon />
+                </button>
             </div>
 
             <div className={'users'}>
-                {filteredStudents.map((student) => (
+                {sortedFilteredStudents.map((student) => (
                     <div className={'user'} key={student.name}>
                         <p>{student.name}</p>
                         <p>{student.absences}</p>
