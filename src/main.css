@@ -47,8 +47,22 @@ select{
     padding: 8px;
     margin: 8px;
     box-sizing: border-box;
+    outline: 1px solid #000;
+    border: none !important;
 }
 
 .user p{
     background-color: greenyellow;
+}
+
+.filterButton{
+    padding: 8px;
+    margin: 8px;
+    box-sizing: border-box;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    outline: 1px solid #000;
 }

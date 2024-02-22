@@ -52,13 +52,13 @@ function List() {
                         {showOptions(Students)}
                     </select>
                 </label>
-                <button onClick={() => handleSort('down')}>
-                    Sort by absences <ArrowDownwardIcon/>
+                <button className={'filterButton'} onClick={() => handleSort('down')}>
+                    Absences <ArrowDownwardIcon/>
                 </button>
-                <button onClick={() => handleSort('up')}>
-                    Sort by absences <ArrowUpwardIcon/>
+                <button className={'filterButton'} onClick={() => handleSort('up')}>
+                    Absences <ArrowUpwardIcon/>
                 </button>
-                <button onClick={() => handleSort(null)}>
+                <button className={'filterButton'} onClick={() => handleSort(null)}>
                     Clear sorting <HighlightOffIcon />
                 </button>
             </div>
