@@ -1,0 +1,42 @@
+[
+    {
+      "name": "Dima",
+      "absences": 25,
+      "city": "Tyshkivka"
+    },
+    {
+      "name": "Goncharik",
+      "absences": 29,
+      "city": "Shkolne"
+    },
+    {
+      "name": "Vladik",
+      "absences": 54,
+      "city": "Shkolne"
+    },
+    {
+      "name": "Nastya",
+      "absences": 184,
+      "city": "Kalunivka"
+    },
+    {
+      "name": "Anastasieva",
+      "absences": 1357,
+      "city": "Shkolne"
+    },
+    {
+      "name": "Marianna",
+      "absences": 200,
+      "city": "Katerunivka"
+    },
+    {
+      "name": "Artem",
+      "absences": 823,
+      "city": "Katranovka"
+    },
+    {
+      "name": "Zozulya",
+      "absences": 1,
+      "city": "Mykolaivka"
+    }
+]

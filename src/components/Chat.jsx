@@ -117,6 +117,7 @@ function Chat({label, placeholder}) {
         <div>
             <label>{label}</label>
             <input
+                className={'chat-input'}
                 placeholder={placeholder} // Використовуємо передані пропси
                 value={inputValue} // Використовуємо змінну стану
                 onChange={handleInputChange} // Викликаємо функцію при зміні значення в інпуті
