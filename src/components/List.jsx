@@ -53,6 +53,7 @@ const StudentComponent = ({ student, dragState, onDragStart, onDragOver, onDrop 
             onDrop={onDrop}
             id={student.id} // Assign ID here
         >
+            <p>{student.id}</p>
             <p>{student.name}</p>
             <p>{student.absences}</p>
             <p>{student.city}</p>
@@ -96,7 +97,6 @@ const List = () => {
         e.preventDefault();
         setOverId(parseInt(e.currentTarget.id, 10)); // Преобразование строки в число
     };
-
 
     const handleDrop = () => {
         if (draggedId && overId && draggedId !== overId) {
@@ -147,7 +147,6 @@ const List = () => {
 
         return filteredStudents;
     }, [selectedCity, sortDirection, students]); // Add 'students' to dependency array
-
 
     if (!sortedFilteredStudents.length) {
         return <p>No students to display.</p>;
