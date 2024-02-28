@@ -1,5 +1,10 @@
 import {useState} from 'react';
 import PropTypes from "prop-types";
+import SendIcon from '@mui/icons-material/Send';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/HighlightOff';
 
 function Chat({label, placeholder}) {
     // Використовуємо хук useState для створення змінних стану
@@ -42,27 +47,35 @@ function Chat({label, placeholder}) {
     // Функція, яка викликається при натисканні на клавішу Enter в інпуті
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            setDisplayedText(currentDisplayText => {
-                const newComment = {
-                    text: inputValue,
-                    date: new Date().toLocaleString(),
-                    author: "User"
-                };
-
-                // Додаємо новий коментар на початок масиву
-                const updatedComments = [newComment, ...currentDisplayText];
-
-                // Якщо кількість коментарів перевищує дозволену, видаляємо останній
-                if (updatedComments.length > elementsOnPage) {
-                    updatedComments.pop(); // Видаляємо останній коментар
-                }
-
-                return updatedComments;
-            });
-
-            setInputValue('');
+            sendText();
         }
     };
+
+    const handleOnClick = () => {
+        sendText();
+    }
+
+    const sendText = () => {
+        setDisplayedText(currentDisplayText => {
+            const newComment = {
+                text: inputValue,
+                date: new Date().toLocaleString(),
+                author: "User"
+            };
+
+            // Додаємо новий коментар на початок масиву
+            const updatedComments = [newComment, ...currentDisplayText];
+
+            // Якщо кількість коментарів перевищує дозволену, видаляємо останній
+            if (updatedComments.length > elementsOnPage) {
+                updatedComments.pop(); // Видаляємо останній коментар
+            }
+
+            return updatedComments;
+        });
+
+        setInputValue('');
+    }
 
     // Функція, яка видаляє елемент з масиву за індексом
     const deleteItemFromArray = (index) => {
@@ -96,16 +109,36 @@ function Chat({label, placeholder}) {
                 )}
                 {isEditing ? (
                     <>
-                        <button onClick={() => saveEdit(index)}>Save</button>
-                        <button onClick={() => setEditingIndex(-1)}>Cancel</button>
+                        <button
+                            className={'filterButton'}
+                            onClick={() => saveEdit(index)}
+                        >
+                            <SaveIcon/>
+                        </button>
+                        <button
+                            className={'filterButton'}
+                            onClick={() => setEditingIndex(-1)}
+                        >
+                            <CancelIcon/>
+                        </button>
                     </>
                 ) : (
                     <>
-                        <button onClick={() => deleteComment(index)}>Delete</button>
-                        <button onClick={() => {
-                            startEditing(index);
-                            setEditingText(comment.text);
-                        }}>Edit</button>
+                        <button
+                            className={'filterButton'}
+                            onClick={() => deleteComment(index)}
+                        >
+                            <DeleteIcon/>
+                        </button>
+                        <button
+                            className={'filterButton'}
+                            onClick={() => {
+                                startEditing(index);
+                                setEditingText(comment.text);
+                            }}
+                        >
+                            <ModeEditIcon/>
+                        </button>
                     </>
                 )}
             </div>
@@ -115,14 +148,19 @@ function Chat({label, placeholder}) {
     // Повертаємо JSX
     return (
         <div>
-            <label>{label}</label>
-            <input
-                className={'chat-input'}
-                placeholder={placeholder} // Використовуємо передані пропси
-                value={inputValue} // Використовуємо змінну стану
-                onChange={handleInputChange} // Викликаємо функцію при зміні значення в інпуті
-                onKeyDown={handleKeyPress} // Викликаємо функцію при натисканні на клавішу
-            />
+            <div className={'chat-input'}>
+                <label>{label}</label>
+                <input
+                    className={'filterButton'}
+                    placeholder={placeholder} // Використовуємо передані пропси
+                    value={inputValue} // Використовуємо змінну стану
+                    onChange={handleInputChange} // Викликаємо функцію при зміні значення в інпуті
+                    onKeyDown={handleKeyPress}
+                />
+                <button onClick={handleOnClick} className={'filterButton'}>
+                    <SendIcon/>
+                </button>
+            </div>
             {displayedText.map(renderComment)} {/*Викликаємо функцію для кожного елементу масиву*/}
         </div>
     );

@@ -51,8 +51,17 @@ select{
     border: none !important;
 }
 
+.user{
+    background: linear-gradient(135deg, #f7ff21, #2eb4ff);
+}
+
+.dragging{
+    opacity: 0.1;
+    background: #312aba !important;
+}
+
 .user p{
-    background-color: greenyellow;
+    background-color: rgb(255, 160, 122);
 }
 
 .filterButton{

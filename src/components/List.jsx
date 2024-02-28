@@ -1,80 +1,191 @@
-import { useState } from 'react';
-import Students from '../list.json';
+import React, { useState, useCallback, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import Checkbox from '@mui/material/Checkbox';
+import Students from '../list.json';
 
-function List() {
-    const [selectedCity, setSelectedCity] = useState('');
-    const [sortDirection, setSortDirection] = useState(null); // 'up', 'down', null
+const CityFilter = ({ onChange }) => {
+    const options = useMemo(() => {
+        const uniqueCities = [...new Set(Students.map(item => item.city))];
+        return uniqueCities.map(city => (
+            <option key={city} value={city}>{city}</option>
+        ));
+    }, []);
 
-    const handleSort = (direction) => {
-        setSortDirection(direction);
-    }
+    return (
+        <select onChange={onChange}>
+            <option value="">All Cities</option>
+            {options}
+        </select>
+    );
+};
 
-    const handleCityChange = (event) => {
-        setSelectedCity(event.target.value);
-        setSortDirection(null);
+CityFilter.propTypes = {
+    onChange: PropTypes.func.isRequired
+};
+
+const StudentComponent = ({ student, dragState, onDragStart, onDragOver, onDrop }) => {
+    const [isDragging, setIsDragging] = useState(false);
+
+    const handleDragStart = (e) => {
+        setIsDragging(true);
+        onDragStart(student.id); // Use student ID or any unique identifier
+        e.dataTransfer.effectAllowed = 'move';
     };
 
-    const getSortedFilteredStudents = () => {
-        let filteredStudents = selectedCity
-            ? Students.filter(student => student.city === selectedCity)
-            : Students;
+    const handleDragEnd = () => {
+        setIsDragging(false);
+    };
+
+    let className = isDragging ? 'user dragging' : 'user';
+
+    return (
+        <div
+            className={className}
+            draggable={dragState}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+            id={student.id} // Assign ID here
+        >
+            <p>{student.name}</p>
+            <p>{student.absences}</p>
+            <p>{student.city}</p>
+        </div>
+    );
+};
+
+StudentComponent.propTypes = {
+    student: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        absences: PropTypes.number.isRequired,
+        city: PropTypes.string.isRequired
+    }).isRequired,
+    dragState: PropTypes.bool.isRequired,
+    onDragStart: PropTypes.func.isRequired,
+    onDragOver: PropTypes.func.isRequired,
+    onDrop: PropTypes.func.isRequired
+};
+
+const Student = React.memo(StudentComponent);
+
+const List = () => {
+    const [selectedCity, setSelectedCity] = useState('');
+    const [sortDirection, setSortDirection] = useState(null);
+    const [dragState, setDragState] = useState(false);
+    const [draggedId, setDraggedId] = useState(null);
+    const [overId, setOverId] = useState(null);
+    const [students, setStudents] = useState(Students); // Manage students as a state
+
+    const handleDragStart = (id) => {
+        setDraggedId(id);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedId(null);
+        setOverId(null);
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setOverId(parseInt(e.currentTarget.id, 10)); // Преобразование строки в число
+    };
+
+
+    const handleDrop = () => {
+        if (draggedId && overId && draggedId !== overId) {
+            console.log('Dragged ID:', draggedId, 'Over ID:', overId);
+            setStudents(prevStudents => replaceDraggedAndOverItems(prevStudents, draggedId, parseInt(overId, 10)));
+        }
+    };
+
+    const replaceDraggedAndOverItems = (students, draggedId, overId) => {
+        const indexDragged = students.findIndex(student => student.id === draggedId);
+        const indexOver = students.findIndex(student => student.id === overId);
+        if (indexDragged < 0 || indexOver < 0) return students; // Check if indexes are valid
+
+        const newStudents = [...students];
+        [newStudents[indexDragged], newStudents[indexOver]] = [newStudents[indexOver], newStudents[indexDragged]];
+        return newStudents;
+    };
+
+    const handleDragStateChange = useCallback(() => {
+        setDragState(prev => !prev);
+    }, []);
+
+    const handleCityChange = useCallback((event) => {
+        setSelectedCity(event.target.value);
+    }, []);
+
+    const handleSort = useCallback((direction) => {
+        setSortDirection(direction);
+    }, []);
+
+    const handleClear = useCallback(() => {
+        setSelectedCity('');
+        setSortDirection(null);
+    }, []);
+
+    const sortedFilteredStudents = useMemo(() => {
+        let filteredStudents = students; // Use 'students' state instead of 'Students'
+
+        if (selectedCity) {
+            filteredStudents = filteredStudents.filter(student => student.city === selectedCity);
+        }
 
         if (sortDirection) {
-            filteredStudents = [...filteredStudents].sort((a, b) => {
-                return sortDirection === 'up' ? a.absences - b.absences : b.absences - a.absences;
-            });
+            filteredStudents = [...filteredStudents].sort((a, b) =>
+                sortDirection === 'up' ? a.absences - b.absences : b.absences - a.absences
+            );
         }
 
         return filteredStudents;
-    };
+    }, [selectedCity, sortDirection, students]); // Add 'students' to dependency array
 
-    const sortedFilteredStudents = getSortedFilteredStudents();
 
-    const showOptions = (data) => {
-        return [...new Set(data.map(item => item.city))]
-        .map(city => (
-            <option key={city} value={city}>
-                {city}
-            </option>
-        ));
-    };
+    if (!sortedFilteredStudents.length) {
+        return <p>No students to display.</p>;
+    }
 
     return (
         <>
-
-            <div className={'filters'}>
-                <label>Filter by city
-                    <select onChange={handleCityChange}>
-                        <option value={''}>Всі міста та села</option>
-                        {showOptions(Students)}
-                    </select>
+            <div className="filters">
+                <label>
+                    Filter by city
+                    <CityFilter onChange={handleCityChange} />
                 </label>
-                <button className={'filterButton'} onClick={() => handleSort('down')}>
-                    Absences <ArrowDownwardIcon/>
+                <button className="filterButton" onClick={() => handleSort('down')}>
+                    Absences <ArrowDownwardIcon />
                 </button>
-                <button className={'filterButton'} onClick={() => handleSort('up')}>
-                    Absences <ArrowUpwardIcon/>
+                <button className="filterButton" onClick={() => handleSort('up')}>
+                    Absences <ArrowUpwardIcon />
                 </button>
-                <button className={'filterButton'} onClick={() => handleSort(null)}>
-                    Clear sorting <HighlightOffIcon />
+                <button className="filterButton" onClick={handleClear}>
+                    Clear <HighlightOffIcon />
                 </button>
+                <Checkbox icon={<ToggleOffIcon />} checkedIcon={<ToggleOnIcon />} onClick={handleDragStateChange} />
             </div>
-
-            <div className={'users'}>
-                {sortedFilteredStudents.map((student) => (
-                    <div className={'user'} key={student.name}>
-                        <p>{student.name}</p>
-                        <p>{student.absences}</p>
-                        <p>{student.city}</p>
-                    </div>
+            <div className="users">
+                {sortedFilteredStudents.map(student => (
+                    <Student
+                        key={student.id}
+                        student={student}
+                        dragState={dragState}
+                        onDragStart={handleDragStart}
+                        onDragOver={handleDragOver}
+                        onDragEnd={handleDragEnd}
+                        onDrop={handleDrop}
+                    />
                 ))}
             </div>
-
         </>
     );
-}
+};
 
 export default List;
