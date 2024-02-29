@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Outlet } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,7 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Home', 'News'];
+const pages = ['Home', 'Contacts', 'Gallery'];
 const settings = ['Point 1', 'Point 2', 'Point 3'];
 
 function ResponsiveAppBar() {
@@ -26,16 +27,15 @@ function ResponsiveAppBar() {
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
-
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
-
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
 
     return (
+    <>
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
@@ -117,7 +117,10 @@ function ResponsiveAppBar() {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={handleCloseNavMenu}
+                                onDoubleClick={handleCloseNavMenu}
+                                onClick={
+                                    () => window.location.href = `/${page}`
+                                }
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 {page}
@@ -157,6 +160,8 @@ function ResponsiveAppBar() {
                 </Toolbar>
             </Container>
         </AppBar>
+        <Outlet />
+    </>
     );
 }
 export default ResponsiveAppBar;
