@@ -24,4 +24,4 @@ function NavHistory() {
     );
 }
 
-export default MyComponent;
+export default NavHistory;
