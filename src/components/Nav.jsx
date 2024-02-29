@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import NavHistory from "./NavHistory.jsx";
 
 const pages = ['Home', 'Contacts', 'Gallery'];
 const settings = ['Point 1', 'Point 2', 'Point 3'];
@@ -36,6 +37,7 @@ function ResponsiveAppBar() {
 
     return (
     <>
+        <NavHistory />
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
