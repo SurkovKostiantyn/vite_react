@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-size: 1.2rem;
+    font-family: Arial, sans-serif !important;
 }
 
 textarea,p, .chat-input {
@@ -76,3 +77,19 @@ select{
     outline: 1px solid #000;
 }
 
+a{
+    color: inherit !important;
+    font: inherit !important;
+    text-decoration: inherit !important;
+}
+
+nav{
+    width: 100%;
+    padding: 10px 0;
+    background-color: #f7ff21;
+}
+
+a.active{
+    background-color: #2eb4ff;
+    color: #fff;
+}
