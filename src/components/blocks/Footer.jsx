@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer>
+    <footer className={"footer"}>
       <ul>
         <li>First item of Footer</li>
         <li>Second item of Footer</li>

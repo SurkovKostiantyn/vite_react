@@ -1,12 +1,14 @@
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import PropTypes from "prop-types";
 import SendIcon from '@mui/icons-material/Send';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/HighlightOff';
+import {ThemeContext} from "../ThemeContext.jsx";
 
 function Chat({label, placeholder}) {
+    const { lightMode } = useContext(ThemeContext);
     // Використовуємо хук useState для створення змінних стану
 
     // Змінна стану для зберігання значення інпута
@@ -147,7 +149,10 @@ function Chat({label, placeholder}) {
 
     // Повертаємо JSX
     return (
-        <div>
+        <div
+            className={"main"}
+            style={{backgroundColor: lightMode ? "white" : "black", color: lightMode ? "black" : "white"}}
+        >
             <div className={'chat-input'}>
                 <label>{label}</label>
                 <input

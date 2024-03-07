@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, {useState, useCallback, useMemo, useContext} from 'react';
 import PropTypes from 'prop-types';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -6,7 +6,8 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import Checkbox from '@mui/material/Checkbox';
-import Students from '../list.json';
+import Students from '../../list.json';
+import {ThemeContext} from "../ThemeContext.jsx";
 
 const CityFilter = ({ onChange }) => {
     const options = useMemo(() => {
@@ -77,6 +78,7 @@ StudentComponent.propTypes = {
 const Student = React.memo(StudentComponent);
 
 const List = () => {
+    const { lightMode } = useContext(ThemeContext);
     const [selectedCity, setSelectedCity] = useState('');
     const [sortDirection, setSortDirection] = useState(null);
     const [dragState, setDragState] = useState(false);
@@ -153,7 +155,10 @@ const List = () => {
     }
 
     return (
-        <>
+        <div
+            className={"main"}
+            style={{backgroundColor: lightMode ? "white" : "black", color: lightMode ? "black" : "white"}}
+        >
             <div className="filters">
                 <label>
                     Filter by city
@@ -183,7 +188,7 @@ const List = () => {
                     />
                 ))}
             </div>
-        </>
+        </div>
     );
 };
 

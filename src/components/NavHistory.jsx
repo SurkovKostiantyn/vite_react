@@ -1,19 +1,19 @@
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 
 function NavHistory() {
-    let history = useNavigate();
+    let navigate = useNavigate();
 
     function handleGoBack() {
-        history(-1); // повертає користувача на попередню сторінку
+        navigate(-1);
     }
 
     function handleGoForward() {
-        history(1); // переводить користувача на наступну сторінку в історії
+        navigate(1);
     }
 
     function handleGoToHome() {
-        history('/home'); // перенаправляє користувача на головну сторінку
+        navigate('/home');
     }
 
     return (

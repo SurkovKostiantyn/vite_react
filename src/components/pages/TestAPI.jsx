@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import {useContext, useEffect, useState} from 'react';
+import { Pagination } from '@mui/material';
+import {ThemeContext} from "../ThemeContext.jsx";
 
 const API_URL = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
 
 const TestAPI = () => {
+    const { lightMode } = useContext(ThemeContext);
     // Створення станів (useState) для зберігання даних, завантаження та помилок
     const [data, setData] = useState(null); // null - початкове значення
     const [loading, setLoading] = useState(true); // true - початкове значення
@@ -13,6 +13,10 @@ const TestAPI = () => {
 
     const [currentPage, setCurrentPage] = useState(1); // Поточна сторінка
     const [itemsPerPage] = useState(10); // Кількість елементів на сторінці
+
+    const handleChangePage = (event, newPage) => {
+        setCurrentPage(newPage);
+    };
 
     useEffect(() => { // Використання useEffect для виконання запиту до API
         fetch(API_URL)// Використання fetch для виконання запиту до API
@@ -32,43 +36,30 @@ const TestAPI = () => {
     const currentData = data?.slice(firstItemIndex, lastItemIndex);
     const totalPages = data ? Math.ceil(data.length / itemsPerPage) : 0;
 
-    const nextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const previousPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error!</p>;
     if (!data) return null;
 
     return (
-        <div>
+        <div
+            className={"main"}
+            style={{backgroundColor: lightMode ? "white" : "black", color: lightMode ? "black" : "white"}}
+        >
             <h1>Exchange rates</h1>
             <ul>
-                {currentData.map((item) => ( // Відображення списку даних
+                {/* Відображення списку даних */}
+                {currentData.map((item) => (
                     <li key={item.cc}>
                         {item.txt} - {item.cc} - {item.rate}
                     </li>
                 ))}
             </ul>
-            <div>
-                <Button onClick={previousPage} disabled={currentPage === 1}>
-                    <ArrowLeftIcon />
-                    Back
-                </Button>
-                <Button onClick={nextPage} disabled={currentPage === totalPages}>
-                    Next
-                    <ArrowRightIcon/>
-                </Button>
-                <p>Page {currentPage} of {totalPages}</p>
-            </div>
+            <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handleChangePage}
+                color="primary"
+            />
         </div>
     );
 

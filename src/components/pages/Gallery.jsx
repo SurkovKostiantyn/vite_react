@@ -1,8 +1,11 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import {ThemeContext} from "../ThemeContext.jsx";
+import {useContext} from "react";
 
 const Gallery = () => {
+    const { lightMode } = useContext(ThemeContext);
     const settings = {
         dots: true,
         infinite: true,
@@ -13,7 +16,13 @@ const Gallery = () => {
     };
 
     return (
-        <div>
+        <div
+            className={"main"}
+            style={{
+                backgroundColor: lightMode ? "white" : "black",
+                color: lightMode ? "black" : "white"
+            }}
+        >
             <h1>Gallery</h1>
             <Slider {...settings}>
                 <div className={"image"}>

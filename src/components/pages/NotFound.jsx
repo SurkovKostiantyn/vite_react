@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import {ThemeContext} from "../ThemeContext.jsx";
 
 function NotFoundPage() {
+    const { lightMode } = useContext(ThemeContext);
     const navigate = useNavigate();
     const [countdown, setCountdown] = useState(5);
 
@@ -22,7 +24,10 @@ function NotFoundPage() {
     }, [navigate]);
 
     return (
-        <div>
+        <div
+            className={"main"}
+            style={{backgroundColor: lightMode ? "white" : "black", color: lightMode ? "black" : "white"}}
+        >
             <h1>404: Сторінку не знайдено</h1>
             <p>Ви будете перенаправлені через {countdown} секунд...</p>
         </div>
