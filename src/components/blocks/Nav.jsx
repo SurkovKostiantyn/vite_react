@@ -11,7 +11,9 @@ const links = [
     { to: "/gallery", label: "Gallery"},
     { to: "/testapi", label: "Test API"},
     { to: "/chat", label: "Chat" },
-    { to: "/list", label: "List" }
+    { to: "/list", label: "List" },
+    { to: "/login", label: "Login" },
+    { to: "/registration", label: "Registration"}
 ];
 
 function Nav() {

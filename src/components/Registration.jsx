@@ -1,6 +1,5 @@
-// src/components/Registration.jsx
-
 import { useState } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../fb-cfg.js';
 
 function Registration() {
@@ -9,10 +8,10 @@ function Registration() {
 
     const handleRegister = async () => {
         try {
-            await auth.createUserWithEmailAndPassword(email, password);
-            // Обробка успішної реєстрації
+            await createUserWithEmailAndPassword(auth, email, password);
+            console.log('User has been registered');
         } catch (error) {
-            // Обробка помилок
+            console.log(error);
         }
     };
 
