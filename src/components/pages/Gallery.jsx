@@ -8,7 +8,7 @@ const Gallery = () => {
     const { lightMode } = useContext(ThemeContext);
     const settings = {
         dots: true,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -20,11 +20,20 @@ const Gallery = () => {
             className={"main"}
             style={{
                 backgroundColor: lightMode ? "white" : "black",
-                color: lightMode ? "black" : "white"
+                color: lightMode ? "black" : "white",
             }}
         >
             <h1>Gallery</h1>
-            <Slider {...settings}>
+            <Slider
+                {...settings}
+                style={{
+                    width: "100%",
+                    maxWidth: "100%",
+                    boxSizing: "border-box",
+                    padding: "0",
+                    margin: "0",
+                }}
+            >
                 <div className={"image"}>
                     <h3>1</h3>
                 </div>

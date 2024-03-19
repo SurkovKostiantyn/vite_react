@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../fb-cfg.js';
 
 function Registration() {
@@ -10,6 +10,16 @@ function Registration() {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             console.log('User has been registered');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleGoogleRegister = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+            console.log('User registered with Google');
         } catch (error) {
             console.log(error);
         }
@@ -28,6 +38,7 @@ function Registration() {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <button onClick={handleRegister}>Register</button>
+            <button onClick={handleGoogleRegister}>Register with Google</button>
         </div>
     );
 }
