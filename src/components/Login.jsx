@@ -1,6 +1,5 @@
-// src/components/Login.jsx
-
 import { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../fb-cfg.js';
 
 function Login() {
@@ -9,10 +8,12 @@ function Login() {
 
     const handleLogin = async () => {
         try {
-            await auth.signInWithEmailAndPassword(email, password);
+            await signInWithEmailAndPassword(auth, email, password);
             // Обробка успішного входу
+            console.log('Successfully logged in');
         } catch (error) {
             // Обробка помилок
+            console.log(error.message);
         }
     };
 
