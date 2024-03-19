@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
 
 function NavHistory() {
     let navigate = useNavigate();
@@ -18,9 +17,9 @@ function NavHistory() {
 
     return (
         <div>
-            <Button onClick={handleGoBack}>Go Back</Button>
-            <Button onClick={handleGoForward}>Go Forward</Button>
-            <Button onClick={handleGoToHome}>Go to Home</Button>
+            <a onClick={handleGoBack}>Back</a>
+            <a onClick={handleGoForward}>Forward</a>
+            <a onClick={handleGoToHome}>Home</a>
         </div>
     );
 }

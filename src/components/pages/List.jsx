@@ -164,15 +164,9 @@ const List = () => {
                     Filter by city
                     <CityFilter onChange={handleCityChange} />
                 </label>
-                <button className="filterButton" onClick={() => handleSort('down')}>
-                    Absences <ArrowDownwardIcon />
-                </button>
-                <button className="filterButton" onClick={() => handleSort('up')}>
-                    Absences <ArrowUpwardIcon />
-                </button>
-                <button className="filterButton" onClick={handleClear}>
-                    Clear <HighlightOffIcon />
-                </button>
+                Absences <ArrowDownwardIcon onClick={() => handleSort('down')}/>
+                Absences <ArrowUpwardIcon onClick={() => handleSort('up')}/>
+                Clear <HighlightOffIcon onClick={handleClear}/>
                 <Checkbox icon={<ToggleOffIcon />} checkedIcon={<ToggleOnIcon />} onClick={handleDragStateChange} />
             </div>
             <div className="users">

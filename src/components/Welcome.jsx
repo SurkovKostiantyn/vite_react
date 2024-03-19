@@ -22,7 +22,7 @@ function Welcome({name, lastname}) {
                 onClick={toggleColor}
                 style={{color: color}}
             >
-                Welcome, {name} {!showLastname && lastname}
+                Hello, {name} {!showLastname && lastname}
             </h1>
         </>
     )

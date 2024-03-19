@@ -13,20 +13,6 @@ body,.wrapper {
     flex-direction: column;
 }
 
-.header {
-    width: 100%;
-}
-
-.nav{
-
-}
-
-.nav-link{
-    margin: 0 10px;
-    text-decoration: none;
-    line-height: 2em;
-}
-
 .main{
     flex: 1 0 auto; /* Розтягується */
     display: flex;

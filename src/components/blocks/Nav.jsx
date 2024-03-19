@@ -4,48 +4,35 @@ import NavHistory from "../NavHistory.jsx";
 import { ThemeContext } from '../ThemeContext.jsx';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import Button from "@mui/material/Button";
 
 const links = [
-    { to: "/", label: "Home", classname: "nav-link" },
-    { to: "/contacts", label: "Contacts", classname: "nav-link"  },
-    { to: "/gallery", label: "Gallery", classname: "nav-link"  },
-    { to: "/testapi", label: "Test API", classname: "nav-link"  },
-    { to: "/chat", label: "Chat", classname: "nav-link"  },
-    { to: "/list", label: "List" , classname: "nav-link" }
+    { to: "/", label: "Home" },
+    { to: "/contacts", label: "Contacts"},
+    { to: "/gallery", label: "Gallery"},
+    { to: "/testapi", label: "Test API"},
+    { to: "/chat", label: "Chat" },
+    { to: "/list", label: "List" }
 ];
 
-function ResponsiveAppBar() {
+function Nav() {
     const { changeStyle } = useContext(ThemeContext);
     const { lightMode } = useContext(ThemeContext);
 
     return (
-        <div className={"heading"}>
-            <nav className={"nav"}>
-                {links.map(link => (
-                    <NavLink
-                        key={link.to}
-                        to={link.to}
-                        className={link.classname}
-                        activeclassname={"active"}
-                    >
-                        <Button>
-                            {link.label}
-                        </Button>
-                    </NavLink>
-                ))}
-                <Button onClick={changeStyle}>
-                    {
-                        lightMode ?
-                        <LightModeIcon />
-                        :
-                        <DarkModeIcon />
-                    }
-                </Button>
-            </nav>
+        <nav>
+            {links.map(link => (
+                <NavLink
+                    key={link.to}
+                    to={link.to}
+                    activeclassname={"active"}
+                >
+                    {link.label}
+                </NavLink>
+            ))}
+            {lightMode ? <LightModeIcon onClick={changeStyle}/> : <DarkModeIcon onClick={changeStyle}/>}
             <NavHistory />
             <Outlet />
-        </div>
+        </nav>
     );
 }
-export default ResponsiveAppBar;
+export default Nav;

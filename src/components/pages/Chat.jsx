@@ -111,36 +111,16 @@ function Chat({label, placeholder}) {
                 )}
                 {isEditing ? (
                     <>
-                        <button
-                            className={'filterButton'}
-                            onClick={() => saveEdit(index)}
-                        >
-                            <SaveIcon/>
-                        </button>
-                        <button
-                            className={'filterButton'}
-                            onClick={() => setEditingIndex(-1)}
-                        >
-                            <CancelIcon/>
-                        </button>
+                        <SaveIcon onClick={() => saveEdit(index)}/>
+                        <CancelIcon onClick={() => setEditingIndex(-1)}/>
                     </>
                 ) : (
                     <>
-                        <button
-                            className={'filterButton'}
-                            onClick={() => deleteComment(index)}
-                        >
-                            <DeleteIcon/>
-                        </button>
-                        <button
-                            className={'filterButton'}
-                            onClick={() => {
+                        <DeleteIcon onClick={() => deleteComment(index)}/>
+                        <ModeEditIcon onClick={() => {
                                 startEditing(index);
                                 setEditingText(comment.text);
-                            }}
-                        >
-                            <ModeEditIcon/>
-                        </button>
+                        }}/>
                     </>
                 )}
             </div>
@@ -162,9 +142,7 @@ function Chat({label, placeholder}) {
                     onChange={handleInputChange} // Викликаємо функцію при зміні значення в інпуті
                     onKeyDown={handleKeyPress}
                 />
-                <button onClick={handleOnClick} className={'filterButton'}>
-                    <SendIcon/>
-                </button>
+                <SendIcon onClick={handleOnClick} />
             </div>
             {displayedText.map(renderComment)} {/*Викликаємо функцію для кожного елементу масиву*/}
         </div>
