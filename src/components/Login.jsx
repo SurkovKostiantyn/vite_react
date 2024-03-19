@@ -1,7 +1,7 @@
 // src/components/Login.jsx
 
 import { useState } from 'react';
-import { auth } from '../firebase';
+import { auth } from '../fb-cfg.js';
 
 function Login() {
     const [email, setEmail] = useState('');

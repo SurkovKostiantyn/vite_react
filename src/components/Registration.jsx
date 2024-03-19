@@ -1,7 +1,7 @@
 // src/components/Registration.jsx
 
 import { useState } from 'react';
-import { auth } from '../firebase';
+import { auth } from '../fb-cfg.js';
 
 function Registration() {
     const [email, setEmail] = useState('');

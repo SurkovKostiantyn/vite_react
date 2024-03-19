@@ -8,6 +8,8 @@ import Gallery from "./components/pages/Gallery.jsx";
 import TestAPI from "./components/pages/TestAPI.jsx";
 import Chat from "./components/pages/Chat.jsx";
 import List from "./components/pages/List.jsx";
+import Login from "./components/Login.jsx";
+import Registration from "./components/Registration.jsx";
 
 function App() {
     return (
@@ -21,6 +23,8 @@ function App() {
                     <Route path="testapi" element={<TestAPI />} />
                     <Route path="chat" element={<Chat label={"Введіть текст"} placeholder={"..."}/>} />
                     <Route path="list" element={<List />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/registration" element={<Registration />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Router>
