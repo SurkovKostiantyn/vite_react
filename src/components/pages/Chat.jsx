@@ -64,8 +64,9 @@ function Chat({label, placeholder}) {
             edited: true, // Додати це поле
             date_edited: new Date().toISOString()
             // Дата не змінюється
-        });
 
+        });
+        console.log('updated');
         setEditingIndex(-1);
     };
 
@@ -125,13 +126,17 @@ function Chat({label, placeholder}) {
                 ) : (
                     <p>
                         {comment.text}
+                        <br/>
                         <small>
-                            ({new Date(comment.date).toLocaleString()} by {comment.author})
+                            (Posted {new Date(comment.date).toLocaleString()} by {comment.author})
                         </small>
-                        <small>
-                            ({new Date(comment.date).toLocaleString()} by {comment.author})
-                            {comment.edited && <span> (edited {new Date(comment.date_edited).toLocaleString()})</span>}
-                        </small>
+                        <br/>
+                        { /*check if the message was edited and display the date */ }
+                        {comment.edited && (
+                            <small>
+                                (Edited {new Date(comment.date_edited).toLocaleString()})
+                            </small>
+                        )}
                     </p>
                 )}
                 {isCurrentUser && (
