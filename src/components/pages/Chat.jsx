@@ -61,11 +61,14 @@ function Chat({label, placeholder}) {
 
         await updateDoc(messageRef, {
             text: editingText,
-            date: new Date().toISOString() // оновлюємо дату редагування
+            edited: true, // Додати це поле
+            date_edited: new Date().toISOString()
+            // Дата не змінюється
         });
 
         setEditingIndex(-1);
     };
+
 
     // Функція, яка викликається при зміні значення в інпуті
     const handleInputChange = (e) => {
@@ -88,6 +91,8 @@ function Chat({label, placeholder}) {
             await addDoc(collection(db, "messages"), {
                 text: inputValue,
                 date: new Date().toISOString(),
+                edited: false, // Додати це поле
+                date_edited: null, // Додати це поле
                 author: user ? user.displayName : 'Anonymous',
                 userId: user ? user.uid : null // Додати це поле
             });
@@ -122,6 +127,10 @@ function Chat({label, placeholder}) {
                         {comment.text}
                         <small>
                             ({new Date(comment.date).toLocaleString()} by {comment.author})
+                        </small>
+                        <small>
+                            ({new Date(comment.date).toLocaleString()} by {comment.author})
+                            {comment.edited && <span> (Edited) </span>} {comment.date_edited && <span> {new Date(comment.date_edited).toLocaleString()} </span>}
                         </small>
                     </p>
                 )}
