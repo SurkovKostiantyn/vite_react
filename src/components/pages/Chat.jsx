@@ -10,6 +10,8 @@ import {ThemeContext} from "../ThemeContext.jsx";
 // Firestore
 import { db } from "../../fb-cfg.js"; // Припускаючи, що db - це екземпляр Firestore
 import { collection, addDoc, query, orderBy, onSnapshot } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+
 // Authentication
 import {auth} from "../../fb-cfg.js";
 
@@ -46,9 +48,6 @@ function Chat({label, placeholder}) {
     // Змінна стану для зберігання тексту редагованого коментаря
     const [editingText, setEditingText] = useState('');
 
-    // Кількість елементів чату на сторінці
-    const elementsOnPage = 5;
-
     // Функція, яка викликається при кліку на кнопку редагування
     const startEditing = (index) => {
         setEditingIndex(index); // Починаємо редагування
@@ -56,14 +55,15 @@ function Chat({label, placeholder}) {
     };
 
     // Функція, яка викликається при кліку на кнопку збереження редагування
-    const saveEdit = (index) => {
-        const newComments = [...displayedText];
-        newComments[index] = {
-            ...newComments[index],
+    const saveEdit = async (index) => {
+        const message = displayedText[index];
+        const messageRef = doc(db, "messages", message.id);
+
+        await updateDoc(messageRef, {
             text: editingText,
-            date: new Date().toLocaleString() // оновлюємо дату редагування
-        };
-        setDisplayedText(newComments);
+            date: new Date().toISOString() // оновлюємо дату редагування
+        });
+
         setEditingIndex(-1);
     };
 
@@ -88,7 +88,8 @@ function Chat({label, placeholder}) {
             await addDoc(collection(db, "messages"), {
                 text: inputValue,
                 date: new Date().toISOString(),
-                author: user ? user.displayName : 'Anonymous'
+                author: user ? user.displayName : 'Anonymous',
+                userId: user ? user.uid : null // Додати це поле
             });
 
             setInputValue('');
@@ -96,23 +97,21 @@ function Chat({label, placeholder}) {
     }
 
 
-    // Функція, яка видаляє елемент з масиву за індексом
-    const deleteItemFromArray = (index) => {
-        // Використовуємо метод filter для створення нового масиву без елемента за індексом
-        setDisplayedText(displayedText.filter((_, i) => i !== index));
-    };
-
     // Функція, яка видаляє коментар
-    const deleteComment = (index) => {
-        deleteItemFromArray(index);
-    }
+    const deleteComment = async (index) => {
+        const message = displayedText[index];
+        const messageRef = doc(db, "messages", message.id);
+
+        await deleteDoc(messageRef);
+    };
 
     // Функція, яка рендерить коментарі
     const renderComment = (comment, index) => {
         const isEditing = index === editingIndex;
+        const isCurrentUser = user && user.uid === comment.userId; // Перевірка, чи поточний користувач є автором
 
         return (
-            <div key={comment.id || index}> {/* Використання унікального ідентифікатора або індексу як ключа */}
+            <div key={comment.id || index}>
                 {isEditing ? (
                     <textarea
                         value={editingText}
@@ -126,23 +125,28 @@ function Chat({label, placeholder}) {
                         </small>
                     </p>
                 )}
-                {isEditing ? (
+                {isCurrentUser && (
                     <>
-                        <SaveIcon onClick={() => saveEdit(index)}/>
-                        <CancelIcon onClick={() => setEditingIndex(-1)}/>
-                    </>
-                ) : (
-                    <>
-                        <DeleteIcon onClick={() => deleteComment(index)}/>
-                        <ModeEditIcon onClick={() => {
-                            startEditing(index);
-                            setEditingText(comment.text);
-                        }}/>
+                        {isEditing ? (
+                            <>
+                                <SaveIcon onClick={() => saveEdit(index)} />
+                                <CancelIcon onClick={() => setEditingIndex(-1)} />
+                            </>
+                        ) : (
+                            <>
+                                <DeleteIcon onClick={() => deleteComment(index)} />
+                                <ModeEditIcon onClick={() => {
+                                    startEditing(index);
+                                    setEditingText(comment.text);
+                                }} />
+                            </>
+                        )}
                     </>
                 )}
             </div>
         );
     };
+
 
 
     // Повертаємо JSX
