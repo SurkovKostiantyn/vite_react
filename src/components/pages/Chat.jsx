@@ -1,14 +1,40 @@
-import {useContext, useState} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import PropTypes from "prop-types";
 import SendIcon from '@mui/icons-material/Send';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
+import {onAuthStateChanged} from 'firebase/auth';
 import CancelIcon from '@mui/icons-material/HighlightOff';
 import {ThemeContext} from "../ThemeContext.jsx";
+// Firestore
+import { db } from "../../fb-cfg.js"; // Припускаючи, що db - це екземпляр Firestore
+import { collection, addDoc, query, orderBy, onSnapshot } from "firebase/firestore";
+// Authentication
+import {auth} from "../../fb-cfg.js";
 
 function Chat({label, placeholder}) {
     const { lightMode } = useContext(ThemeContext);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const q = query(collection(db, "messages"), orderBy("date"));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const messages = snapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+            setDisplayedText(messages);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+
+    useEffect(() => {
+        // Очистити підписку, коли компонент знищується
+        return onAuthStateChanged(auth, (currentUser) => {
+            console.log(currentUser);
+            setUser(currentUser);
+        });
+    }, []);
     // Використовуємо хук useState для створення змінних стану
 
     // Змінна стану для зберігання значення інпута
@@ -57,27 +83,18 @@ function Chat({label, placeholder}) {
         sendText();
     }
 
-    const sendText = () => {
-        setDisplayedText(currentDisplayText => {
-            const newComment = {
+    const sendText = async () => {
+        if (inputValue.trim()) {
+            await addDoc(collection(db, "messages"), {
                 text: inputValue,
-                date: new Date().toLocaleString(),
-                author: "User"
-            };
+                date: new Date().toISOString(),
+                author: user ? user.displayName : 'Anonymous'
+            });
 
-            // Додаємо новий коментар на початок масиву
-            const updatedComments = [newComment, ...currentDisplayText];
-
-            // Якщо кількість коментарів перевищує дозволену, видаляємо останній
-            if (updatedComments.length > elementsOnPage) {
-                updatedComments.pop(); // Видаляємо останній коментар
-            }
-
-            return updatedComments;
-        });
-
-        setInputValue('');
+            setInputValue('');
+        }
     }
+
 
     // Функція, яка видаляє елемент з масиву за індексом
     const deleteItemFromArray = (index) => {
@@ -95,7 +112,7 @@ function Chat({label, placeholder}) {
         const isEditing = index === editingIndex;
 
         return (
-            <div key={index}>
+            <div key={comment.id || index}> {/* Використання унікального ідентифікатора або індексу як ключа */}
                 {isEditing ? (
                     <textarea
                         value={editingText}
@@ -105,7 +122,7 @@ function Chat({label, placeholder}) {
                     <p>
                         {comment.text}
                         <small>
-                            ({comment.date} by {comment.author})
+                            ({new Date(comment.date).toLocaleString()} by {comment.author})
                         </small>
                     </p>
                 )}
@@ -118,14 +135,15 @@ function Chat({label, placeholder}) {
                     <>
                         <DeleteIcon onClick={() => deleteComment(index)}/>
                         <ModeEditIcon onClick={() => {
-                                startEditing(index);
-                                setEditingText(comment.text);
+                            startEditing(index);
+                            setEditingText(comment.text);
                         }}/>
                     </>
                 )}
             </div>
         );
     };
+
 
     // Повертаємо JSX
     return (
