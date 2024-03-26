@@ -130,7 +130,7 @@ function Chat({label, placeholder}) {
                         </small>
                         <small>
                             ({new Date(comment.date).toLocaleString()} by {comment.author})
-                            {comment.edited && <span> (Edited) </span>} {comment.date_edited && <span> {new Date(comment.date_edited).toLocaleString()} </span>}
+                            {comment.edited && <span> (edited {new Date(comment.date_edited).toLocaleString()})</span>}
                         </small>
                     </p>
                 )}
