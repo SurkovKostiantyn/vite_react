@@ -26,3 +26,6 @@ dist-ssr
 *.sw?
 
 vite.config.js.time*
+
+.firebase
+package-lock.json
