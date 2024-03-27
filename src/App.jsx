@@ -13,6 +13,7 @@ import Registration from "./components/Registration.jsx";
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute  from "./components/PublicRoute.jsx";
 import Logout from './components/Logout.jsx';
+import Game from './components/pages/Game.jsx';
 
 function App() {
 
@@ -30,6 +31,11 @@ function App() {
                     {
                         <PrivateRoute>
                             <Chat label={"Введіть текст"} placeholder={"..."}/>
+                        </PrivateRoute>
+                    } />
+                    <Route path="/game" element={
+                        <PrivateRoute>
+                            <Game />
                         </PrivateRoute>
                     } />
                     <Route path="/login" element=

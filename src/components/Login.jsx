@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../fb-cfg.js';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [captchaVerified, setCaptchaVerified] = useState(false);
 
     const handleLogin = async () => {
         try {
@@ -25,6 +27,10 @@ function Login() {
         }
     };
 
+    const onCaptchaChange = (value) => {
+        setCaptchaVerified(!!value);
+    };
+
     return (
         <div>
             <input
@@ -32,13 +38,20 @@ function Login() {
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
             />
+            <br />
             <input
                 type="password"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button onClick={handleLogin}>Login with Email</button>
-            <button onClick={handleGoogleLogin}>Login with Google</button>
+            <br />
+            <ReCAPTCHA
+                sitekey="6LcjFaYpAAAAAF-L0JstQTJ4vaKwoyXu29qbi9ul"
+                onChange={onCaptchaChange}
+            />
+            <br />
+            <button onClick={handleLogin} disabled={!captchaVerified}>Login with Email</button>
+            <button onClick={handleGoogleLogin} disabled={!captchaVerified}>Login with Google</button>
         </div>
     );
 }

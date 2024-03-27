@@ -17,6 +17,8 @@ function Nav() {
         { to: "/testapi", label: "Test API"},
         { to: "/chat", label: "Chat" },
         { to: "/list", label: "List" },
+        { to: "/game", label: "Game" },
+
         // Умовне відображення посилань
         ...(!loggedIn ? [
             { to: "/login", label: "Login" },
