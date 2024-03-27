@@ -89,7 +89,7 @@ const Gallery = () => {
             
             <div>
                 {images.map((url, index) => (
-                    <img src={url} style={{ width: "100%" }}  alt={'x'} key={index} />
+                    <img src={url} style={{ width: "200px" }}  alt={'x'} key={index} />
                 ))}
             </div>
         </div>
