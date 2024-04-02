@@ -77,11 +77,7 @@ const Gallery = () => {
 
     return (
         <div
-            className={"main"}
-            style={{
-                backgroundColor: lightMode ? "white" : "black",
-                color: lightMode ? "black" : "white",
-            }}
+            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
         >
             <h1>Gallery</h1>
             <input type="file" onChange={handleFileSelect} />

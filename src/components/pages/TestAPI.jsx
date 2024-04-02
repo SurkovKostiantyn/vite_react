@@ -36,14 +36,13 @@ const TestAPI = () => {
     const currentData = data?.slice(firstItemIndex, lastItemIndex);
     const totalPages = data ? Math.ceil(data.length / itemsPerPage) : 0;
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error!</p>;
+    if (loading) return <div className={"main"}>Loading...</div>;
+    if (error) return <div className={"main"}>Error!</div>;
     if (!data) return null;
 
     return (
         <div
-            className={"main"}
-            style={{backgroundColor: lightMode ? "white" : "black", color: lightMode ? "black" : "white"}}
+            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
         >
             <h1>Exchange rates</h1>
             <ul>

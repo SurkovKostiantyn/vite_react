@@ -1,4 +1,5 @@
 import React, {useState, useCallback, useMemo, useContext} from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -8,6 +9,10 @@ import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import Checkbox from '@mui/material/Checkbox';
 import Students from '../../list.json';
 import {ThemeContext} from "../ThemeContext.jsx";
+
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {addLike, removeLike} from "../likesSlice.js";
 
 const CityFilter = ({ onChange }) => {
     const options = useMemo(() => {
@@ -31,6 +36,8 @@ CityFilter.propTypes = {
 
 const StudentComponent = ({ student, dragState, onDragStart, onDragOver, onDrop }) => {
     const [isDragging, setIsDragging] = useState(false);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const dispatch = useDispatch();
 
     const handleDragStart = (e) => {
         setIsDragging(true);
@@ -40,6 +47,15 @@ const StudentComponent = ({ student, dragState, onDragStart, onDragOver, onDrop 
 
     const handleDragEnd = () => {
         setIsDragging(false);
+    };
+
+    const handleOnClick = () => {
+        setIsFavorite(!isFavorite);
+        if (!isFavorite) {
+            dispatch(addLike());
+        } else {
+            dispatch(removeLike());
+        }
     };
 
     let className = isDragging ? 'user dragging' : 'user';
@@ -58,6 +74,11 @@ const StudentComponent = ({ student, dragState, onDragStart, onDragOver, onDrop 
             <p>{student.name}</p>
             <p>{student.absences}</p>
             <p>{student.city}</p>
+
+            <div onClick={handleOnClick} >
+                {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            </div>
+
         </div>
     );
 };
@@ -77,7 +98,7 @@ StudentComponent.propTypes = {
 
 const Student = React.memo(StudentComponent);
 
-const List = () => {
+export const List = () => {
     const { lightMode } = useContext(ThemeContext);
     const [selectedCity, setSelectedCity] = useState('');
     const [sortDirection, setSortDirection] = useState(null);
@@ -156,8 +177,7 @@ const List = () => {
 
     return (
         <div
-            className={"main"}
-            style={{backgroundColor: lightMode ? "white" : "black", color: lightMode ? "black" : "white"}}
+            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
         >
             <div className="filters">
                 <label>
@@ -186,4 +206,5 @@ const List = () => {
     );
 };
 
+// Остання частина файлу
 export default List;

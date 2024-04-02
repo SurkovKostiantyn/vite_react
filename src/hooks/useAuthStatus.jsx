@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { auth } from '../fb-cfg.js';
+import { auth } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
 
 export function useAuthStatus() {

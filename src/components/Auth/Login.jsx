@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '../fb-cfg.js';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { auth } from '../../firebase.js';
+import {ThemeContext} from "../ThemeContext.jsx";
 
 function Login() {
+    const { lightMode } = useContext(ThemeContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [captchaVerified, setCaptchaVerified] = useState(false);
 
     const handleLogin = async () => {
         try {
@@ -27,12 +27,10 @@ function Login() {
         }
     };
 
-    const onCaptchaChange = (value) => {
-        setCaptchaVerified(!!value);
-    };
-
     return (
-        <div>
+        <div
+            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
+        >
             <input
                 type="email"
                 placeholder="Email"
@@ -45,13 +43,17 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <br />
-            <ReCAPTCHA
-                sitekey="6LcjFaYpAAAAAF-L0JstQTJ4vaKwoyXu29qbi9ul"
-                onChange={onCaptchaChange}
-            />
+            <button
+                onClick={handleLogin}
+            >
+                Login with Email
+            </button>
             <br />
-            <button onClick={handleLogin} disabled={!captchaVerified}>Login with Email</button>
-            <button onClick={handleGoogleLogin} disabled={!captchaVerified}>Login with Google</button>
+            <button
+                onClick={handleGoogleLogin}
+            >
+                Login with Google
+            </button>
         </div>
     );
 }

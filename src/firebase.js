@@ -11,7 +11,8 @@ const firebaseConfig = {
     storageBucket: "kn20-b22a3.appspot.com",
     messagingSenderId: "108815732004",
     appId: "1:108815732004:web:13ba307cb46192e651f7b1",
-    measurementId: "G-2HR10JPW9G"
+    measurementId: "G-2HR10JPW9G",
+    databaseURL: "https://kn20-b22a3-default-rtdb.europe-west1.firebasedatabase.app",
 };
 
 // Initialize Firebase

@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react';
-import {auth} from '../../fb-cfg.js';
+import {auth} from '../../firebase.js';
 import {onAuthStateChanged} from 'firebase/auth';
 import Welcome from "../Welcome.jsx";
 import {ThemeContext} from "../ThemeContext.jsx";
@@ -18,11 +18,7 @@ const Home = () => {
 
     return (
         <div
-            className={"main"}
-            style={{
-                backgroundColor: lightMode ? "white" : "black",
-                color: lightMode ? "black" : "white"
-            }}
+            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
         >
             <Welcome name={"Користувач"} lastname={
                 user ? user.displayName + " " + user.email : "Анонім" }

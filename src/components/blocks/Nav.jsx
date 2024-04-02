@@ -6,9 +6,12 @@ import { useAuthStatus } from '../../hooks/useAuthStatus'; // Переконай
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
+import { useSelector } from 'react-redux';
+
 function Nav() {
     const { changeStyle, lightMode } = useContext(ThemeContext);
     const { loggedIn } = useAuthStatus();
+    const likedStudents = useSelector((state) => state.likes.likedStudents);
 
     const links = [
         { to: "/", label: "Home" },
@@ -42,6 +45,9 @@ function Nav() {
             <button onClick={changeStyle}>
                 {lightMode ? <LightModeIcon /> : <DarkModeIcon />}
             </button>
+            <span>
+                <span>{likedStudents}</span>
+            </span>
             <NavHistory />
             <Outlet />
         </nav>

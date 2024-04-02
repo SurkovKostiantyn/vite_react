@@ -13,6 +13,16 @@ body,.wrapper {
     flex-direction: column;
 }
 
+.light-mode{
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.dark-mode{
+    background-color: #333;
+    color: #fff;
+}
+
 .main{
     flex: 1 0 auto; /* Розтягується */
     display: flex;
@@ -27,5 +37,35 @@ body,.wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.filters{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.users{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.user{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    -webkit-user-select: none;  /* Chrome, Safari, and Opera */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* Internet Explorer/Edge */
+    user-select: none;
 }
 

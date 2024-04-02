@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth } from '../fb-cfg.js';
+import { auth } from '../../firebase.js';
+import {ThemeContext} from "../ThemeContext.jsx";
 
 function Registration() {
+    const { lightMode } = useContext(ThemeContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -26,18 +28,23 @@ function Registration() {
     };
 
     return (
-        <div>
+        <div
+            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
+        >
             <input
                 type="email"
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
             />
+            <br />
             <input
                 type="password"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button onClick={handleRegister}>Register</button>
+            <br />
+            <button onClick={handleRegister}>Register with email</button>
+            <br />
             <button onClick={handleGoogleRegister}>Register with Google</button>
         </div>
     );

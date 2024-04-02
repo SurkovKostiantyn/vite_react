@@ -25,8 +25,7 @@ function NotFoundPage() {
 
     return (
         <div
-            className={"main"}
-            style={{backgroundColor: lightMode ? "white" : "black", color: lightMode ? "black" : "white"}}
+            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
         >
             <h1>404: Сторінку не знайдено</h1>
             <p>Ви будете перенаправлені через {countdown} секунд...</p>

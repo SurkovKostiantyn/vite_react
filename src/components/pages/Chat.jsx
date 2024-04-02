@@ -8,12 +8,12 @@ import {onAuthStateChanged} from 'firebase/auth';
 import CancelIcon from '@mui/icons-material/HighlightOff';
 import {ThemeContext} from "../ThemeContext.jsx";
 // Firestore
-import { db } from "../../fb-cfg.js"; // Припускаючи, що db - це екземпляр Firestore
+import { db } from "../../firebase.js"; // Припускаючи, що db - це екземпляр Firestore
 import { collection, addDoc, query, orderBy, onSnapshot } from "firebase/firestore";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 
 // Authentication
-import {auth} from "../../fb-cfg.js";
+import {auth} from "../../firebase.js";
 
 function Chat({label, placeholder}) {
     const { lightMode } = useContext(ThemeContext);
@@ -117,7 +117,10 @@ function Chat({label, placeholder}) {
         const isCurrentUser = user && user.uid === comment.userId; // Перевірка, чи поточний користувач є автором
 
         return (
-            <div key={comment.id || index}>
+            <div
+                key={comment.id || index}
+                className={"main" + (lightMode ? " light-mode" : " dark-mode")}
+            >
                 {isEditing ? (
                     <textarea
                         value={editingText}

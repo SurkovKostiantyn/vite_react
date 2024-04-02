@@ -6,11 +6,7 @@ const Contacts = () => {
     const { lightMode } = useContext(ThemeContext);
     return (
         <div
-            className={"main"}
-            style={{
-                backgroundColor: lightMode ? "white" : "black",
-                color: lightMode ? "black" : "white"
-            }}
+            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
         >
             <h1>Contacts</h1>
         </div>
