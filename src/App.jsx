@@ -25,6 +25,7 @@ export const store = configureStore({
     },
 });
 
+
 const PrivateRoutes = () => {
     return (
         <PrivateRoute>

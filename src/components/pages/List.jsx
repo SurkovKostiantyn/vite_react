@@ -49,6 +49,7 @@ const StudentComponent = ({ student, dragState, onDragStart, onDragOver, onDrop 
         setIsDragging(false);
     };
 
+
     const handleOnClick = () => {
         setIsFavorite(!isFavorite);
         if (!isFavorite) {

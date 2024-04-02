@@ -22,6 +22,7 @@ function Nav() {
         { to: "/list", label: "List" },
         { to: "/game", label: "Game" },
 
+
         // Умовне відображення посилань
         ...(!loggedIn ? [
             { to: "/login", label: "Login" },
