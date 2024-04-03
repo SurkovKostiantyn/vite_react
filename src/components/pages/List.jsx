@@ -49,6 +49,7 @@ const StudentComponent = ({ student }) => {
     return (
         <div
             id={student.id} // Assign ID here
+            className={"user"}
         >
             <p>{student.id}</p>
             <p>{student.name}</p>

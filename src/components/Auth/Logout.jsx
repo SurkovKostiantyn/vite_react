@@ -18,7 +18,7 @@ function Logout() {
     }, [navigate]);
 
     return (
-        <div className={"main"}>
+        <div className={"main login"}>
             Logging out...
         </div>
     );

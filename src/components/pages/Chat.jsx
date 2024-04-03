@@ -117,7 +117,6 @@ function Chat() {
         return (
             <div
                 key={comment.id || index}
-                className={"main" + (lightMode ? " light-mode" : " dark-mode")}
             >
                 {isEditing ? (
                     <textarea
@@ -164,19 +163,17 @@ function Chat() {
 
     // Повертаємо JSX
     return (
-        <div
-            className={"main"}
-            style={{backgroundColor: lightMode ? "white" : "black", color: lightMode ? "black" : "white"}}
-        >
+        <div  className={"main" + (lightMode ? " light-mode" : " dark-mode")}>
             <div className={'chat-input'}>
-                <label>Chat</label>
-                <input
-                    className={'filterButton'}
-                    placeholder={'Type your message here'}
-                    value={inputValue} // Використовуємо змінну стану
-                    onChange={handleInputChange} // Викликаємо функцію при зміні значення в інпуті
-                    onKeyDown={handleKeyPress}
-                />
+                <label>Chat
+                    <input
+                        className={'filterButton'}
+                        placeholder={'Type your message here'}
+                        value={inputValue} // Використовуємо змінну стану
+                        onChange={handleInputChange} // Викликаємо функцію при зміні значення в інпуті
+                        onKeyDown={handleKeyPress}
+                    />
+                </label>
                 <SendIcon onClick={handleOnClick} />
             </div>
             {displayedText.map(renderComment)} {/*Викликаємо функцію для кожного елементу масиву*/}

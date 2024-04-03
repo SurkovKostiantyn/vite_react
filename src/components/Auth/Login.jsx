@@ -2,9 +2,8 @@ import { useState } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase.js';
-import EmailIcon from '@mui/icons-material/Email';
 import GoogleIcon from '@mui/icons-material/Google';
-
+import EmailIcon from '@mui/icons-material/Email';
 
 function Login() {
     const navigate = useNavigate();
@@ -46,9 +45,9 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <br />
-            <EmailIcon onClick={handleLogin}/>
+            <button onClick={handleLogin}>Login with <EmailIcon/></button>
             <br />
-            <GoogleIcon onClick={handleGoogleLogin}/>
+            <GoogleIcon onClick={handleGoogleLogin} style={{fontSize: '50px', cursor: 'pointer'}}/>
         </div>
     );
 }

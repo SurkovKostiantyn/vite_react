@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase.js';
+import EmailIcon from '@mui/icons-material/Email';
+import GoogleIcon from '@mui/icons-material/Google';
 
 function Registration() {
     const [email, setEmail] = useState('');
@@ -37,8 +39,8 @@ function Registration() {
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button onClick={handleRegister}>Register with email</button>
-            <button onClick={handleGoogleRegister}>Register with Google</button>
+            <button onClick={handleRegister}>Register with <EmailIcon/></button>
+           <GoogleIcon onClick={handleGoogleRegister} style={{fontSize: '50px', cursor: 'pointer'}}/>
         </div>
     );
 }

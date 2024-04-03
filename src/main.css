@@ -29,6 +29,11 @@ body,.wrapper {
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+}
+
+.login{
+    justify-content: center;
 }
 
 .footer{
@@ -69,3 +74,14 @@ body,.wrapper {
     user-select: none;
 }
 
+.chat-input{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    width: clamp(300px, 80%, 500px);
+    background-color: antiquewhite;
+}
