@@ -1,5 +1,4 @@
 import {useContext, useState, useEffect} from 'react';
-import PropTypes from "prop-types";
 import SendIcon from '@mui/icons-material/Send';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';

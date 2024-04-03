@@ -1,5 +1,5 @@
-import {HashRouter as Router, Routes, Route} from "react-router-dom";
-import {useContext} from "react";
+import {HashRouter as Router, Routes, Route, useNavigate} from "react-router-dom";
+import {useContext, useEffect} from "react";
 // elements
 import Nav from './components/blocks/Nav.jsx';
 import Footer from './components/blocks/Footer.jsx';
@@ -37,12 +37,19 @@ const App = () => {
 
 const AuthContent = () => {
     const { currentUser } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!currentUser) {
+            navigate('/login');
+        }
+    }, [currentUser, navigate]);
 
     if (!currentUser) {
         return (
             <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/registration" element={<Registration />} />
+                <Route path="login" element={<Login />} />
+                <Route path="registration" element={<Registration />} />
             </Routes>
         );
     }
