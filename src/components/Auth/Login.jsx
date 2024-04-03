@@ -1,10 +1,13 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase.js';
-import {ThemeContext} from "../ThemeContext.jsx";
+import EmailIcon from '@mui/icons-material/Email';
+import GoogleIcon from '@mui/icons-material/Google';
+
 
 function Login() {
-    const { lightMode } = useContext(ThemeContext);
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -12,6 +15,7 @@ function Login() {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             console.log('Successfully logged in with email and password');
+            navigate('/');
         } catch (error) {
             console.log(error.message);
         }
@@ -22,15 +26,14 @@ function Login() {
         try {
             await signInWithPopup(auth, provider);
             console.log('Successfully logged in with Google');
+            navigate('/');
         } catch (error) {
             console.log(error.message);
         }
     };
 
     return (
-        <div
-            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
-        >
+        <div className={"main login"} >
             <input
                 type="email"
                 placeholder="Email"
@@ -43,17 +46,9 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <br />
-            <button
-                onClick={handleLogin}
-            >
-                Login with Email
-            </button>
+            <EmailIcon onClick={handleLogin}/>
             <br />
-            <button
-                onClick={handleGoogleLogin}
-            >
-                Login with Google
-            </button>
+            <GoogleIcon onClick={handleGoogleLogin}/>
         </div>
     );
 }

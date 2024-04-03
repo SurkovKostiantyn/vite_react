@@ -11,7 +11,6 @@ const Home = () => {
     useEffect(() => {
         // Очистити підписку, коли компонент знищується
         return onAuthStateChanged(auth, (currentUser) => {
-            console.log(currentUser);
             setUser(currentUser);
         });
     }, []);

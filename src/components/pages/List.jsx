@@ -1,26 +1,24 @@
-import React, {useState, useCallback, useMemo, useContext} from 'react';
+import React, {useState, useCallback, useEffect, useMemo, useContext} from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import ToggleOffIcon from '@mui/icons-material/ToggleOff';
-import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import Checkbox from '@mui/material/Checkbox';
-import Students from '../../list.json';
 import {ThemeContext} from "../ThemeContext.jsx";
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../firebase.js';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {addLike, removeLike} from "../likesSlice.js";
 
-const CityFilter = ({ onChange }) => {
+const CityFilter = ({ onChange, students }) => {
     const options = useMemo(() => {
-        const uniqueCities = [...new Set(Students.map(item => item.city))];
+        const uniqueCities = [...new Set(students.map(item => item.city))];
         return uniqueCities.map(city => (
             <option key={city} value={city}>{city}</option>
         ));
-    }, []);
+    }, [students]);
 
     return (
         <select onChange={onChange}>
@@ -31,24 +29,13 @@ const CityFilter = ({ onChange }) => {
 };
 
 CityFilter.propTypes = {
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    students: PropTypes.array.isRequired // Додайте propTypes для students
 };
 
-const StudentComponent = ({ student, dragState, onDragStart, onDragOver, onDrop }) => {
-    const [isDragging, setIsDragging] = useState(false);
+const StudentComponent = ({ student }) => {
     const [isFavorite, setIsFavorite] = useState(false);
     const dispatch = useDispatch();
-
-    const handleDragStart = (e) => {
-        setIsDragging(true);
-        onDragStart(student.id); // Use student ID or any unique identifier
-        e.dataTransfer.effectAllowed = 'move';
-    };
-
-    const handleDragEnd = () => {
-        setIsDragging(false);
-    };
-
 
     const handleOnClick = () => {
         setIsFavorite(!isFavorite);
@@ -59,16 +46,8 @@ const StudentComponent = ({ student, dragState, onDragStart, onDragOver, onDrop 
         }
     };
 
-    let className = isDragging ? 'user dragging' : 'user';
-
     return (
         <div
-            className={className}
-            draggable={dragState}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
             id={student.id} // Assign ID here
         >
             <p>{student.id}</p>
@@ -91,10 +70,6 @@ StudentComponent.propTypes = {
         absences: PropTypes.number.isRequired,
         city: PropTypes.string.isRequired
     }).isRequired,
-    dragState: PropTypes.bool.isRequired,
-    onDragStart: PropTypes.func.isRequired,
-    onDragOver: PropTypes.func.isRequired,
-    onDrop: PropTypes.func.isRequired
 };
 
 const Student = React.memo(StudentComponent);
@@ -103,44 +78,20 @@ export const List = () => {
     const { lightMode } = useContext(ThemeContext);
     const [selectedCity, setSelectedCity] = useState('');
     const [sortDirection, setSortDirection] = useState(null);
-    const [dragState, setDragState] = useState(false);
-    const [draggedId, setDraggedId] = useState(null);
-    const [overId, setOverId] = useState(null);
-    const [students, setStudents] = useState(Students); // Manage students as a state
+    const [students, setStudents] = useState([]);
 
-    const handleDragStart = (id) => {
-        setDraggedId(id);
+    const loadStudents = async () => {
+        const querySnapshot = await getDocs(collection(db, "students")); // Припускаючи, що ваша колекція називається "students"
+        const studentList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setStudents(studentList);
+        console.log('Students loaded:', studentList);
     };
 
-    const handleDragEnd = () => {
-        setDraggedId(null);
-        setOverId(null);
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        setOverId(parseInt(e.currentTarget.id, 10)); // Преобразование строки в число
-    };
-
-    const handleDrop = () => {
-        if (draggedId && overId && draggedId !== overId) {
-            console.log('Dragged ID:', draggedId, 'Over ID:', overId);
-            setStudents(prevStudents => replaceDraggedAndOverItems(prevStudents, draggedId, parseInt(overId, 10)));
-        }
-    };
-
-    const replaceDraggedAndOverItems = (students, draggedId, overId) => {
-        const indexDragged = students.findIndex(student => student.id === draggedId);
-        const indexOver = students.findIndex(student => student.id === overId);
-        if (indexDragged < 0 || indexOver < 0) return students; // Check if indexes are valid
-
-        const newStudents = [...students];
-        [newStudents[indexDragged], newStudents[indexOver]] = [newStudents[indexOver], newStudents[indexDragged]];
-        return newStudents;
-    };
-
-    const handleDragStateChange = useCallback(() => {
-        setDragState(prev => !prev);
+    useEffect(() => {
+        loadStudents()
+            .then(() => console.log('Students loaded'))
+            .catch(error => console.error('Error loading students:', error))
+            .finally(() => console.log('Finally'));
     }, []);
 
     const handleCityChange = useCallback((event) => {
@@ -183,23 +134,17 @@ export const List = () => {
             <div className="filters">
                 <label>
                     Filter by city
-                    <CityFilter onChange={handleCityChange} />
+                    <CityFilter onChange={handleCityChange} students={students} />
                 </label>
                 Absences <ArrowDownwardIcon onClick={() => handleSort('down')}/>
                 Absences <ArrowUpwardIcon onClick={() => handleSort('up')}/>
                 Clear <HighlightOffIcon onClick={handleClear}/>
-                <Checkbox icon={<ToggleOffIcon />} checkedIcon={<ToggleOnIcon />} onClick={handleDragStateChange} />
             </div>
             <div className="users">
                 {sortedFilteredStudents.map(student => (
                     <Student
                         key={student.id}
                         student={student}
-                        dragState={dragState}
-                        onDragStart={handleDragStart}
-                        onDragOver={handleDragOver}
-                        onDragEnd={handleDragEnd}
-                        onDrop={handleDrop}
                     />
                 ))}
             </div>
@@ -207,5 +152,4 @@ export const List = () => {
     );
 };
 
-// Остання частина файлу
 export default List;

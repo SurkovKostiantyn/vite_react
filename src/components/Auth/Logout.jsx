@@ -7,15 +7,21 @@ function Logout() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        signOut(auth).then(() => {
-            console.log('Logged out');
-            navigate('/login');
-        }).catch((error) => {
-            console.log(error);
-        });
+        setTimeout(() => {
+            signOut(auth).then(() => {
+                console.log('Logged out');
+                navigate('/login');
+            }).catch((error) => {
+                console.log(error);
+            });
+        }, 2000);
     }, [navigate]);
 
-    return <div>Logging out...</div>;
+    return (
+        <div className={"main"}>
+            Logging out...
+        </div>
+    );
 }
 
 export default Logout;

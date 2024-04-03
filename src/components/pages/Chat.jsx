@@ -15,7 +15,7 @@ import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 // Authentication
 import {auth} from "../../firebase.js";
 
-function Chat({label, placeholder}) {
+function Chat() {
     const { lightMode } = useContext(ThemeContext);
     const [user, setUser] = useState(null);
 
@@ -33,7 +33,6 @@ function Chat({label, placeholder}) {
     useEffect(() => {
         // Очистити підписку, коли компонент знищується
         return onAuthStateChanged(auth, (currentUser) => {
-            console.log(currentUser);
             setUser(currentUser);
         });
     }, []);
@@ -102,7 +101,6 @@ function Chat({label, placeholder}) {
         }
     }
 
-
     // Функція, яка видаляє коментар
     const deleteComment = async (index) => {
         const message = displayedText[index];
@@ -164,8 +162,6 @@ function Chat({label, placeholder}) {
         );
     };
 
-
-
     // Повертаємо JSX
     return (
         <div
@@ -173,10 +169,10 @@ function Chat({label, placeholder}) {
             style={{backgroundColor: lightMode ? "white" : "black", color: lightMode ? "black" : "white"}}
         >
             <div className={'chat-input'}>
-                <label>{label}</label>
+                <label>Chat</label>
                 <input
                     className={'filterButton'}
-                    placeholder={placeholder} // Використовуємо передані пропси
+                    placeholder={'Type your message here'}
                     value={inputValue} // Використовуємо змінну стану
                     onChange={handleInputChange} // Викликаємо функцію при зміні значення в інпуті
                     onKeyDown={handleKeyPress}
@@ -187,12 +183,6 @@ function Chat({label, placeholder}) {
         </div>
     );
 }
-
-// Валідація пропсів
-Chat.propTypes = {
-    label: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
-};
 
 // Експортуємо Chat
 export default Chat;

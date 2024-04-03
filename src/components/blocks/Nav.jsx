@@ -21,15 +21,7 @@ function Nav() {
         { to: "/chat", label: "Chat" },
         { to: "/list", label: "List" },
         { to: "/game", label: "Game" },
-
-
-        // Умовне відображення посилань
-        ...(!loggedIn ? [
-            { to: "/login", label: "Login" },
-            { to: "/registration", label: "Registration"}
-        ] : [
-            { to: "/logout", label: "Logout" }
-        ])
+        { to: "/logout", label: "Logout" },
     ];
 
     return (
