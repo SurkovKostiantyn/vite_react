@@ -5,9 +5,7 @@ import {useContext} from "react";
 const Contacts = () => {
     const { lightMode } = useContext(ThemeContext);
     return (
-        <div
-            className={"main" + (lightMode ? " light-mode" : " dark-mode")}
-        >
+        <div className={"main" + (lightMode ? " light-mode" : " dark-mode")} >
             <h1>Contacts</h1>
         </div>
     )
