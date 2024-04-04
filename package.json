@@ -6,7 +6,7 @@
   "homepage": "https://surkovkostiantyn.github.io/vite_react/",
   "type": "module",
   "scripts": {
-    "start": "vite",
+    "start": "node server.js",
     "predeploy": "npm run build:firebase",
     "deploy": "firebase deploy",
     "deploy:gh": "npm run build:gh-pages && gh-pages -d dist",
@@ -24,6 +24,7 @@
     "@mui/material": "^5.15.14",
     "@reduxjs/toolkit": "^2.2.3",
     "bootstrap": "^5.3.3",
+    "express": "^4.19.2",
     "firebase": "^10.9.0",
     "path": "^0.12.7",
     "prop-types": "^15.8.1",
