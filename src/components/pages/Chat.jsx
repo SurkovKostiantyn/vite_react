@@ -7,12 +7,12 @@ import {onAuthStateChanged} from 'firebase/auth';
 import CancelIcon from '@mui/icons-material/HighlightOff';
 import {ThemeContext} from "../ThemeContext.jsx";
 // Firestore
-import { db } from "../../firebase.js"; // Припускаючи, що db - це екземпляр Firestore
+import { db } from "@/firebase.js"; // Припускаючи, що db - це екземпляр Firestore
 import { collection, addDoc, query, orderBy, onSnapshot } from "firebase/firestore";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 
 // Authentication
-import {auth} from "../../firebase.js";
+import {auth} from "@/firebase.js";
 
 function Chat() {
     const { lightMode } = useContext(ThemeContext);

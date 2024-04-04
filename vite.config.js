@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
-// Определите базовый URL на основе переменной окружения
+// Базовый путь для разных сред развертывания
 const base = (() => {
   switch (process.env.DEPLOY_ENV) {
     case 'gh-pages':
@@ -19,6 +20,10 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 3000
-  }
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'), // Упрощенный путь к src
+    },
+  },
 });
-

@@ -6,7 +6,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {ThemeContext} from "../ThemeContext.jsx";
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../../firebase.js';
+import { db } from '@/firebase.js';
 
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
