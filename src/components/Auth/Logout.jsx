@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '@/firebase.js';
 import { signOut } from 'firebase/auth';
+import Loading from "@/components/Loading.jsx";
 
 function Logout() {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ function Logout() {
 
     return (
         <div className={"main login"}>
-            Logging out...
+            <Loading />
         </div>
     );
 }

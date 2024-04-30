@@ -6,7 +6,7 @@ import { dirname } from 'path';
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-// Сервирование статических файлов из директории 'dist'
+// Сервування статичних файлів з папки dist
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Обработка всех запросов GET путем отправки файла index.html

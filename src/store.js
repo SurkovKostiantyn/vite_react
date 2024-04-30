@@ -1,6 +1,6 @@
 // redux
 import {configureStore} from '@reduxjs/toolkit';
-import likesReducer from './components/likesSlice.js';
+import likesReducer from '@/components/likesSlice.js';
 
 const store = configureStore({
     reducer: {

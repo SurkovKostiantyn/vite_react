@@ -1,6 +1,7 @@
 import {createContext, useEffect, useState} from 'react';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
 import PropTypes from "prop-types";
+import Loading from "@/components/Loading.jsx";
 
 export const AuthContext = createContext();
 
@@ -18,8 +19,8 @@ export const AuthProvider = ({children}) => {
 
     if (loading) {
         return (
-            <div className={"main"}>
-                Loading...
+            <div className={'main login'}>
+                <Loading/>
             </div>
         );
     }

@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import NavHistory from "../NavHistory.jsx";
 import { ThemeContext } from '../ThemeContext.jsx';
-import { useAuthStatus } from '../../hooks/useAuthStatus'; // Переконайтеся, що ви створили цей хук
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
@@ -10,7 +9,6 @@ import { useSelector } from 'react-redux';
 
 function Nav() {
     const { changeStyle, lightMode } = useContext(ThemeContext);
-    const { loggedIn } = useAuthStatus();
     const likedStudents = useSelector((state) => state.likes.likedStudents);
 
     const links = [

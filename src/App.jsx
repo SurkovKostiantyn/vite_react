@@ -1,24 +1,23 @@
 import {HashRouter as Router, Routes, Route, useNavigate} from "react-router-dom";
 import {useContext, useEffect} from "react";
 // elements
-import Nav from './components/blocks/Nav.jsx';
-import Footer from './components/blocks/Footer.jsx';
+import Nav from '@/components/blocks/Nav.jsx';
+import Footer from '@/components/blocks/Footer.jsx';
 // pages
-import Home from './components/pages/Home.jsx';
-import Contacts from './components/pages/Contacts.jsx';
-import Gallery from './components/pages/Gallery.jsx';
-import TestAPI from './components/pages/TestAPI.jsx';
-import List from './components/pages/List.jsx';
-import Chat from './components/pages/Chat.jsx';
-import NotFound from './components/pages/NotFound.jsx';
-import Game from "./components/pages/Game.jsx";
+import Home from '@/components/pages/Home.jsx';
+import Contacts from '@/components/pages/Contacts.jsx';
+import Gallery from '@/components/pages/Gallery.jsx';
+import TestAPI from '@/components/pages/TestAPI.jsx';
+import List from '@/components/pages/List.jsx';
+import Chat from '@/components/pages/Chat.jsx';
+import NotFound from '@/components/pages/NotFound.jsx';
+import Game from "@/components/pages/Game.jsx";
 // auth
-import {AuthProvider, AuthContext} from "./components/Auth/AuthContext.jsx";
-import Login from "./components/Auth/Login.jsx";
-import Registration from "./components/Auth/Registration.jsx";
-import Logout from "./components/Auth/Logout.jsx";
+import {AuthProvider, AuthContext} from "@/components/Auth/AuthContext.jsx";
+import Login from "@/components/Auth/Login.jsx";
+import Logout from "@/components/Auth/Logout.jsx";
 
-import store from "./store";
+import store from "@/store";
 import {Provider} from 'react-redux';
 
 const App = () => {
@@ -49,7 +48,6 @@ const AuthContent = () => {
         return (
             <Routes>
                 <Route path="login" element={<Login />} />
-                <Route path="registration" element={<Registration />} />
             </Routes>
         );
     }
